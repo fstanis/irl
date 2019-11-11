@@ -1,0 +1,94 @@
+<!doctype html>
+<!--
+ Copyright 2019 Google LLC
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <link rel="prefetch" href="https://cdn.ampproject.org/v0.js">
+  <link rel="prefetch" href="https://cdn.ampproject.org/v0/amp-story-1.0.js">
+  <link rel="preconnect" href="https://www.reddit.com" crossorigin>
+  <link rel="preconnect" href="https://i.redd.it" crossorigin>
+  <title>irl</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script defer async src="./src/index.js"></script>
+  <style>
+    body,
+    html {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    #loading {
+      font-family: sans-serif;
+      font-size: 1.5em;
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+      height: 100vh;
+    }
+
+    #container.loaded + #loading {
+      display: none;
+    }
+
+    #story {
+      width: 100%;
+      border: 0;
+      flex-grow: 1;
+    }
+
+    #container {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    #container.loaded {
+      display: flex;
+    }
+
+    .toolbar {
+      height: 5vh;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .nav:target {
+      border: 1px solid black;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="container">
+    <iframe id="story" sandbox="allow-scripts allow-same-origin"></iframe>
+    <div class="toolbar">
+      <button id="next">next</button>
+      <a href="#meow" id="meow" class="nav">#meow</a>
+      <a href="#woof" id="woof" class="nav">#woof</a>
+      <a href="#me" id="me" class="nav">#me</a>
+      <a href="#new" id="new" class="nav">#new</a>
+    </div>
+  </div>
+  <div id="loading">Loading, please wait...</div>
+</body>
+
+</html>

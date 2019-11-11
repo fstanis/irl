@@ -1,0 +1,22 @@
+{
+  "name": "irl",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "parcel index.html",
+    "build": "env NODE_ENV=production parcel build --public-url '.' index.html"
+  },
+  "author": "Filip Stanis <filip@stanis.me>",
+  "license": "Apache-2.0",
+  "private": true,
+  "devDependencies": {
+    "parcel-bundler": "^1.12.4"
+  },
+  "dependencies": {
+    "mustache": "^3.1.0"
+  },
+  "browserslist": [
+    "last 1 Chrome versions"
+  ]
+}
