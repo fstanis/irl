@@ -26,66 +26,25 @@
   <title>irl</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script defer async src="./src/index.js"></script>
-  <style>
-    body,
-    html {
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
-    }
-
-    #loading {
-      font-family: sans-serif;
-      font-size: 1.5em;
-      display: flex;
-      justify-content: center;
-      flex-direction: column;
-      text-align: center;
-      height: 100vh;
-    }
-
-    #container.loaded + #loading {
-      display: none;
-    }
-
-    #story {
-      width: 100%;
-      border: 0;
-      flex-grow: 1;
-    }
-
-    #container {
-      display: none;
-      flex-direction: column;
-      justify-content: center;
-      height: 100vh;
-    }
-
-    #container.loaded {
-      display: flex;
-    }
-
-    .toolbar {
-      height: 5vh;
-      display: flex;
-      justify-content: space-between;
-    }
-
-    .nav:target {
-      border: 1px solid black;
-    }
-  </style>
+  <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/buttons-min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans&display=swap">
+  <link rel="stylesheet" href="./style.css">
 </head>
 
 <body>
   <div id="container">
-    <iframe id="story" sandbox="allow-scripts allow-same-origin"></iframe>
     <div class="toolbar">
-      <button id="next">next</button>
-      <a href="#meow" id="meow" class="nav">#meow</a>
-      <a href="#woof" id="woof" class="nav">#woof</a>
-      <a href="#me" id="me" class="nav">#me</a>
-      <a href="#new" id="new" class="nav">#new</a>
+      <a id="link" class="pure-button" target="_blank"></a>
+    </div>
+    <div class="toolbar">
+      <div class="buttons">
+        <button class="pure-button pure-button-primary" id="prev">⇦</button>
+        <button class="pure-button pure-button-primary" id="next">⇨</button>
+      </div>
+      <a href="#meow" id="meow" class="nav pure-button">#meow</a>
+      <a href="#woof" id="woof" class="nav pure-button">#woof</a>
+      <a href="#me" id="me" class="nav pure-button">#me</a>
+      <a href="#new" id="new" class="nav pure-button">#new</a>
     </div>
   </div>
   <div id="loading">Loading, please wait...</div>

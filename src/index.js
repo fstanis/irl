@@ -24,7 +24,9 @@ function findElements() {
   return {
     container: document.querySelector('#container'),
     iframe: document.querySelector('#story'),
-    next: document.querySelector('#next')
+    next: document.querySelector('#next'),
+    prev: document.querySelector('#prev'),
+    link: document.querySelector('#link')
   };
 }
 

@@ -37,7 +37,7 @@
 <body>
   <amp-story standalone title="{{title}}">
     {{#items}}
-    <amp-story-page id="i-{{id}}">
+    <amp-story-page id="page{{index}}" data-reddit-id="{{id}}">
       <amp-story-grid-layer template="vertical">
         {{#video}}
         <amp-video autoplay poster="{{poster}}" layout="fill">

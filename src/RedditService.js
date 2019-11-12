@@ -16,26 +16,47 @@
 
 export default class RedditService {
   constructor(url) {
-    this.baseUrl = url;
-    this.url = url;
+    this.baseUrl_ = url;
+    this.pages_ = [''];
+    this.currentPage_ = 0;
   }
 
   nextPage() {
-    this.url = `${this.baseUrl}?after=${this.after}`;
+    if (this.currentPage_ === this.pages_.length - 1) {
+      return false;
+    }
+    this.currentPage_++;
+    return true;
+  }
+
+  prevPage() {
+    if (this.currentPage_ === 0) {
+      return false;
+    }
+    this.currentPage_--;
+    return true;
+  }
+
+  getUrl_() {
+    const after = this.pages_[this.currentPage_];
+    return `${this.baseUrl_}?after=${after}`;
   }
 
   async fetch() {
-    const req = await fetch(this.url);
+    const req = await fetch(this.getUrl_());
     const resp = await req.json();
-    this.after = resp.data.after;
+    if (this.currentPage_ === this.pages_.length - 1) {
+      this.pages_.push(resp.data.after);
+    }
     return resp.data.children
-      .map(({ data }) => {
+      .map(({ data }, i) => {
         const o = {
           url: data.url,
           author: data.author,
           title: data.title,
           permalink: 'https://reddit.com' + data.permalink,
-          id: data.id
+          id: data.id,
+          index: i + 1
         };
         if (data.is_video && data.media.reddit_video) {
           Object.assign(o, this.extractVideo_(data));
