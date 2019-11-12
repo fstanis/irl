@@ -18,6 +18,7 @@ import StoryManager from './StoryManager';
 
 async function load() {
   new StoryManager(findElements());
+  window.scrollTo(0, 1);
 }
 
 function findElements() {

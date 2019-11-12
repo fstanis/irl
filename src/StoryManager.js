@@ -56,7 +56,7 @@ export default class StoryManager {
   onStoryPageChange_(currentPage) {
     const id = currentPage.getAttribute('data-reddit-id');
     const { title, permalink } = this.itemMap_.get(id);
-    this.link_.textContent = title;
+    this.link_.textContent = `🔗 ${title}`;
     this.link_.setAttribute('href', permalink);
   }
 
