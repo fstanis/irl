@@ -44,7 +44,8 @@ export default class StoryManager {
   update_ = async () => {
     const parsedHash = new URLSearchParams(window.location.hash.substring(1));
     this.mode_ = parsedHash.get('mode') || defaultMode;
-    this.after_ = parsedHash.get('after') || null;
+    this.after_ = parsedHash.get('after') || '';
+    this.useNew_ = parsedHash.has('new');
     this.target_ = modes[this.mode_];
     this.container_.className = '';
     await this.display_();
@@ -66,7 +67,7 @@ export default class StoryManager {
   };
 
   async display_() {
-    this.irl = new RedditService(this.target_.url, this.after_);
+    this.irl = new RedditService(this.target_.url, this.after_, this.useNew_);
     await this.render_();
   }
 
@@ -95,7 +96,12 @@ export default class StoryManager {
     iframe.style.display = '';
 
     this.registerPageChange_(this.onStoryPageChange_);
-    this.next_.href = `#mode=${this.mode_}&after=${this.irl.nextAfter()}`;
+
+    let nextUrl = `#mode=${this.mode_}&after=${this.irl.nextAfter()}`;
+    if (this.useNew_) {
+      nextUrl += '&new';
+    }
+    this.next_.href = nextUrl;
   }
 
   registerPageChange_(callback) {

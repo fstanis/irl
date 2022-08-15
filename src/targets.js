@@ -16,19 +16,15 @@
 
 export const modes = {
   'me': {
-    url: 'https://www.reddit.com/r/me_irl.json',
-    title: 'me_irl'
-  },
-  'new': {
-    url: 'https://www.reddit.com/r/me_irl/new.json',
+    url: 'https://www.reddit.com/r/me_irl',
     title: 'me_irl'
   },
   'meow': {
-    url: 'https://www.reddit.com/r/MEOW_IRL.json',
+    url: 'https://www.reddit.com/r/MEOW_IRL',
     title: 'meow_irl'
   },
   'woof': {
-    url: 'https://www.reddit.com/r/woof_irl.json',
+    url: 'https://www.reddit.com/r/woof_irl',
     title: 'woof_irl'
   }
 };

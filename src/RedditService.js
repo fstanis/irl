@@ -15,9 +15,10 @@
  */
 
 export default class RedditService {
-  constructor(url, after) {
+  constructor(url, after, useNew = false) {
     this.baseUrl_ = url;
-    this.after_ = after;
+    this.after_ = after || '';
+    this.useNew_ = useNew || false;
     this.nextAfter_ = null;
   }
 
@@ -26,7 +27,11 @@ export default class RedditService {
   }
 
   getUrl_() {
-    return `${this.baseUrl_}?after=${this.after_}`;
+    let url = this.baseUrl_;
+    if (this.useNew_) {
+      url += '/new';
+    }
+    return `${url}.json?after=${this.after_}`;
   }
 
   async fetch() {
