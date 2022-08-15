@@ -48,7 +48,7 @@ export default class RedditService {
           id: data.id,
           index: i + 1
         };
-        if (data.is_video && data.media.reddit_video) {
+        if (data.is_video && (data.media.reddit_video || data.secure_media.reddit_video)) {
           Object.assign(o, this.extractVideo_(data));
         } else if (data.url.startsWith('https://v.redd.it/')) {
           Object.assign(o, this.guessVideo_(data));
@@ -87,13 +87,19 @@ export default class RedditService {
   }
 
   extractVideo_(data) {
+    let video;
+    if (data.media.reddit_video) {
+      video = data.media.reddit_video;
+    } else if (data.secure_media.reddit_video) {
+      video = data.secure_media.reddit_video;
+    }
     return {
       video: {
         poster: this.getPoster_(data),
         src: {
-          fallback: data.media.reddit_video.fallback_url,
-          hls: data.media.reddit_video.hls_url,
-          dash: data.media.reddit_video.dash_url
+          fallback: video.fallback_url,
+          hls: video.hls_url,
+          dash: video.dash_url
         }
       }
     };
@@ -104,7 +110,7 @@ export default class RedditService {
       video: {
         poster: this.getPoster_(data),
         src: {
-          fallback: `${data.url}/DASH_480?source=fallback`,
+          fallback: `${data.url}/DASH_480.mp4?source=fallback`,
           hls: `${data.url}/HLSPlaylist.m3u8`,
           dash: `${data.url}/DASHPlaylist.mpd`
         }
