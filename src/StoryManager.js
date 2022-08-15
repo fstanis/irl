@@ -23,44 +23,43 @@ const template = fs.readFileSync('./src/template.html', 'utf8');
 Mustache.parse(template);
 
 export default class StoryManager {
-  constructor({ container, iframe, next, prev, link }) {
+  constructor({ container, iframe, next, prev, link, fullscreen }) {
     this.container_ = container;
     this.iframe_ = null;
     this.link_ = link;
-
-    this.update_ = this.update_.bind(this);
-    this.onNextClick_ = this.onNextClick_.bind(this);
-    this.onPrevClick_ = this.onPrevClick_.bind(this);
-    this.onStoryPageChange_ = this.onStoryPageChange_.bind(this);
+    this.isFullscreen_ = false;
 
     window.addEventListener('hashchange', this.update_);
+    window.addEventListener('resize', this.resize_);
     next.addEventListener('click', this.onNextClick_);
     prev.addEventListener('click', this.onPrevClick_);
+    fullscreen.addEventListener('click', this.fullscreen_);
+    this.resize_();
     this.update_();
   }
 
-  onNextClick_(event) {
+  onNextClick_ = (event) => {
     event.preventDefault();
     if (this.irl.nextPage()) {
       this.render_();
     }
-  }
+  };
 
-  onPrevClick_(event) {
+  onPrevClick_ = (event) => {
     event.preventDefault();
     if (this.irl.prevPage()) {
       this.render_();
     }
-  }
+  };
 
-  onStoryPageChange_(currentPage) {
+  onStoryPageChange_ = (currentPage) => {
     const id = currentPage.getAttribute('data-reddit-id');
     const { title, permalink } = this.itemMap_.get(id);
     this.link_.textContent = `🔗 ${title}`;
     this.link_.setAttribute('href', permalink);
-  }
+  };
 
-  async update_() {
+  update_ = async () => {
     if (!targets[window.location.hash]) {
       window.location.hash = defaultTarget;
     }
@@ -68,7 +67,21 @@ export default class StoryManager {
     this.container_.className = '';
     await this.display_();
     this.container_.className = 'loaded';
-  }
+  };
+
+  resize_ = () => {
+    this.container_.style.height = window.innerHeight + 'px';
+  };
+
+  fullscreen_ = () => {
+    if (!this.isFullscreen_) {
+      this.isFullscreen_ = true;
+      document.documentElement.requestFullscreen();
+    } else {
+      this.isFullscreen_ = false;
+      document.exitFullscreen();
+    }
+  };
 
   async display_() {
     this.irl = new RedditService(this.target_.url);
