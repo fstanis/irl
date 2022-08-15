@@ -31,6 +31,18 @@
     amp-img img {
       object-fit: contain;
     }
+
+    .textbox {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: sans-serif;
+      text-align: center;
+      margin: 2em;
+      color: white;
+      text-shadow: 1px 1px 2px black;
+      font-size: 1.5em;
+    }
   </style>
 </head>
 
@@ -55,8 +67,18 @@
         </amp-gfycat>
         {{/gfycat}}
       </amp-story-grid-layer>
+      <amp-story-page-outlink layout="nodisplay">
+        <a href="{{permalink}}" target="_blank">Reddit post</a>
+      </amp-story-page-outlink>
     </amp-story-page>
     {{/items}}
+    <amp-story-page id="lastpage">
+      <amp-story-grid-layer template="fill">
+        <div class="textbox">
+          <p>You've reached the end. Press "Load more" below.</p>
+        </div>
+      </amp-story-grid-layer>
+    </amp-story-page>
   </amp-story>
 </body>
 

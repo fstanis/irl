@@ -15,39 +15,24 @@
  */
 
 export default class RedditService {
-  constructor(url) {
+  constructor(url, after) {
     this.baseUrl_ = url;
-    this.pages_ = [''];
-    this.currentPage_ = 0;
+    this.after_ = after;
+    this.nextAfter_ = null;
   }
 
-  nextPage() {
-    if (this.currentPage_ === this.pages_.length - 1) {
-      return false;
-    }
-    this.currentPage_++;
-    return true;
-  }
-
-  prevPage() {
-    if (this.currentPage_ === 0) {
-      return false;
-    }
-    this.currentPage_--;
-    return true;
+  nextAfter() {
+    return this.nextAfter_;
   }
 
   getUrl_() {
-    const after = this.pages_[this.currentPage_];
-    return `${this.baseUrl_}?after=${after}`;
+    return `${this.baseUrl_}?after=${this.after_}`;
   }
 
   async fetch() {
     const req = await fetch(this.getUrl_());
     const resp = await req.json();
-    if (this.currentPage_ === this.pages_.length - 1) {
-      this.pages_.push(resp.data.after);
-    }
+    this.nextAfter_ = resp.data.after;
     return resp.data.children
       .map(({ data }, i) => {
         const o = {

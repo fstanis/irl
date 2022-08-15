@@ -26,8 +26,6 @@ function findElements() {
     container: document.querySelector('#container'),
     iframe: document.querySelector('#story'),
     next: document.querySelector('#next'),
-    prev: document.querySelector('#prev'),
-    link: document.querySelector('#link'),
     fullscreen: document.querySelector('#fullscreen')
   };
 }

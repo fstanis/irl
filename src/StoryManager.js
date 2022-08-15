@@ -15,7 +15,7 @@
  */
 
 import RedditService from './RedditService';
-import { targets, defaultTarget } from './targets';
+import { modes, defaultMode } from './targets';
 import Mustache from 'mustache';
 import fs from 'fs';
 
@@ -23,47 +23,29 @@ const template = fs.readFileSync('./src/template.html', 'utf8');
 Mustache.parse(template);
 
 export default class StoryManager {
-  constructor({ container, iframe, next, prev, link, fullscreen }) {
+  constructor({ container, iframe, next, fullscreen }) {
     this.container_ = container;
     this.iframe_ = null;
-    this.link_ = link;
     this.isFullscreen_ = false;
+    this.next_ = next;
+    this.mode_ = defaultMode;
 
     window.addEventListener('hashchange', this.update_);
     window.addEventListener('resize', this.resize_);
-    next.addEventListener('click', this.onNextClick_);
-    prev.addEventListener('click', this.onPrevClick_);
     fullscreen.addEventListener('click', this.fullscreen_);
     this.resize_();
     this.update_();
   }
 
-  onNextClick_ = (event) => {
-    event.preventDefault();
-    if (this.irl.nextPage()) {
-      this.render_();
-    }
-  };
-
-  onPrevClick_ = (event) => {
-    event.preventDefault();
-    if (this.irl.prevPage()) {
-      this.render_();
-    }
-  };
-
   onStoryPageChange_ = (currentPage) => {
-    const id = currentPage.getAttribute('data-reddit-id');
-    const { title, permalink } = this.itemMap_.get(id);
-    this.link_.textContent = `🔗 ${title}`;
-    this.link_.setAttribute('href', permalink);
+    // unused
   };
 
   update_ = async () => {
-    if (!targets[window.location.hash]) {
-      window.location.hash = defaultTarget;
-    }
-    this.target_ = targets[window.location.hash];
+    const parsedHash = new URLSearchParams(window.location.hash.substring(1));
+    this.mode_ = parsedHash.get('mode') || defaultMode;
+    this.after_ = parsedHash.get('after') || null;
+    this.target_ = modes[this.mode_];
     this.container_.className = '';
     await this.display_();
     this.container_.className = 'loaded';
@@ -84,7 +66,7 @@ export default class StoryManager {
   };
 
   async display_() {
-    this.irl = new RedditService(this.target_.url);
+    this.irl = new RedditService(this.target_.url, this.after_);
     await this.render_();
   }
 
@@ -113,6 +95,7 @@ export default class StoryManager {
     iframe.style.display = '';
 
     this.registerPageChange_(this.onStoryPageChange_);
+    this.next_.href = `#mode=${this.mode_}&after=${this.irl.nextAfter()}`;
   }
 
   registerPageChange_(callback) {
@@ -130,7 +113,7 @@ export default class StoryManager {
 
   createIframe_() {
     const iframe = document.createElement('iframe');
-    iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin');
+    iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-top-navigation-by-user-activation');
     iframe.style.display = 'none';
     return iframe;
   }

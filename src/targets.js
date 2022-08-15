@@ -14,23 +14,23 @@
  * limitations under the License.
  */
 
-export const targets = {
-  '#me': {
+export const modes = {
+  'me': {
     url: 'https://www.reddit.com/r/me_irl.json',
     title: 'me_irl'
   },
-  '#new': {
+  'new': {
     url: 'https://www.reddit.com/r/me_irl/new.json',
     title: 'me_irl'
   },
-  '#meow': {
+  'meow': {
     url: 'https://www.reddit.com/r/MEOW_IRL.json',
     title: 'meow_irl'
   },
-  '#woof': {
+  'woof': {
     url: 'https://www.reddit.com/r/woof_irl.json',
     title: 'woof_irl'
   }
 };
 
-export const defaultTarget = '#meow';
+export const defaultMode = 'meow';
