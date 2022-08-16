@@ -52,7 +52,7 @@ export default class RedditService {
           Object.assign(o, this.extractVideo_(data));
         } else if (data.url.startsWith('https://v.redd.it/')) {
           Object.assign(o, this.guessVideo_(data));
-        } else if (data.url.startsWith('https://i.redd.it/')) {
+        } else if (data.url.startsWith('https://i.redd.it/') || (data.url.startsWith('https://i.imgur.com/'))) {
           Object.assign(o, this.extractImage_(data));
         } else if (data.url.startsWith('https://gfycat.com/')) {
           Object.assign(o, this.extractGfycat_(data));
