@@ -29,6 +29,7 @@ export default class StoryManager {
     this.isFullscreen_ = false;
     this.next_ = next;
     this.mode_ = defaultMode;
+    this.page_ = '';
 
     window.addEventListener('hashchange', this.update_);
     window.addEventListener('resize', this.resize_);
@@ -38,7 +39,10 @@ export default class StoryManager {
   }
 
   onStoryPageChange_ = (currentPage) => {
-    // unused
+    this.page_ = currentPage.getAttribute('id');
+    const parsedHash = new URLSearchParams(window.location.hash.substring(1));
+    parsedHash.set('page', this.page_);
+    history.replaceState(null, '', '#' + parsedHash.toString())
   };
 
   update_ = async () => {
@@ -46,6 +50,7 @@ export default class StoryManager {
     this.mode_ = parsedHash.get('mode') || defaultMode;
     this.after_ = parsedHash.get('after') || '';
     this.useNew_ = parsedHash.has('new');
+    this.page_ = parsedHash.get('page') || '';
     this.target_ = modes[this.mode_];
     this.container_.className = '';
     await this.display_();
@@ -80,7 +85,7 @@ export default class StoryManager {
     });
     this.itemMap_ = new Map(items.map(e => [e.id, e]));
     const blob = new Blob([page], { type: 'text/html' });
-    const url = URL.createObjectURL(blob);
+    const url = URL.createObjectURL(blob) + '#page=' + this.page_;
 
     const iframe = this.createIframe_();
     iframe.setAttribute('src', url);
